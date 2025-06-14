@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Copilot Chat</title>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --bg-dark: #c9a7e3;
+      --bg-sidebar: #1e293b;
+      --bg-header: #b26fe8;
+      --text-light: #ffffff;
+      --highlight: #000000;
+      --accent: #10b981;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      display: flex;
+      height: 100vh;
+      background: var(--bg-dark);
+      color: var(--text-light);
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .sidebar {
+      width: 260px;
+      background: var(--bg-sidebar);
+      padding: 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .sidebar h2 {
+      font-size: 1.2rem;
+    }
+
+    .new-chat-btn {
+      background: var(--highlight);
+      border: none;
+      color: white;
+      padding: 0.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .chat-title {
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      background: #475569;
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: linear-gradient(90deg, #b34dea, #42057a);
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: white;
+    }
+
+    .messages {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .message {
+      max-width: 70%;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      font-size: 0.95rem;
+    }
+
+    .user {
+      align-self: flex-end;
+      background: var(--highlight);
+    }
+
+    .bot {
+      align-self: flex-start;
+      background: #8c2ec0;
+    }
+
+    .input-container {
+      display: flex;
+      padding: 1rem;
+      background: var(--bg-sidebar);
+      gap: 0.5rem;
+    }
+
+    .input-container input {
+      flex: 1;
+      padding: 0.75rem;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    .send-btn, .mic-btn {
+      padding: 0.75rem;
+      font-size: 1.2rem;
+      border-radius: 50%;
+      background: var(--highlight);
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .mic-btn.active {
+      background: var(--accent);
+    }
+
+    .send-btn:hover, .mic-btn:hover {
+      background: var(--accent);
+    }
+
+    .status {
+      text-align: center;
+      padding: 0.25rem;
+      font-size: 0.9rem;
+      color: var(--accent);
+    }
+
+    /* Media Queries for Responsive Design */
+    @media (max-width: 1024px) {
+      .sidebar {
+        width: 200px;
+      }
+
+      .chat-title {
+        font-size: 0.9rem;
+      }
+
+      header h1 {
+        font-size: 1.2rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        height: auto;
+        padding: 0.5rem;
+      }
+
+      .sidebar-header {
+        display: none;
+      }
+
+      .chat-title {
+        margin: 0 0.5rem;
+        flex: 0 0 auto;
+        background: var(--highlight);
+        color: white;
+      }
+
+      .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      header h1 {
+        font-size: 1rem;
+      }
+
+      .input-container {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .input-container input {
+        width: 100%;
+      }
+
+      .send-btn, .mic-btn {
+        width: 100%;
+        border-radius: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h2>Chats</h2>
+      <button class="new-chat-btn" onclick="startNewChat()">➕</button>
+    </div>
+    <div id="chatList"></div>
+  </div>
+
+  <div class="main">
+    <header>
+      <h1>🤖 Copilot Chat</h1>
+    </header>
+
+    <div class="messages" id="messages"></div>
+    <div class="status" id="statusText"></div>
+
+    <div class="input-container">
+      <input type="text" id="userInput" placeholder="Type a message..." />
+      <button class="mic-btn" id="micBtn" onclick="toggleVoice()">🎤</button>
+      <button class="send-btn" onclick="sendMessage()">➤</button>
+    </div>
+  </div>
+
+  <script>
+    let allChats = [];
+    let currentChat = [];
+    let currentChatIndex = -1;
+    let isListening = false;
+    let recognition;
+    let isVoiceTriggered = false;
+    const statusText = document.getElementById("statusText");
+
+    function startNewChat() {
+      if (currentChat.length > 0) {
+        allChats.push(currentChat);
+        const title = currentChat.find(msg => msg.sender === 'user')?.text.slice(0, 30) || 'Untitled Chat';
+        addChatToSidebar(title);
+      }
+      currentChat = [];
+      currentChatIndex = allChats.length;
+      renderMessages();
+    }
+
+    function addChatToSidebar(title) {
+      const chatList = document.getElementById('chatList');
+      const div = document.createElement('div');
+      div.className = 'chat-title';
+      div.innerText = title;
+      div.onclick = () => {
+        currentChatIndex = Array.from(chatList.children).indexOf(div);
+        currentChat = allChats[currentChatIndex];
+        renderMessages();
+      };
+      chatList.appendChild(div);
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('userInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      speechSynthesis.cancel();
+      statusText.innerText = '';
+
+      currentChat.push({ sender: 'user', text });
+      input.value = '';
+      renderMessages();
+
+      fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text })
+      })
+      .then(res => res.json())
+      .then(data => {
+        currentChat.push({ sender: 'bot', text: data.response });
+        renderMessages();
+        if (isVoiceTriggered) {
+          statusText.innerText = "🔈 Tap mic to stop voice";
+          speak(data.response);
+        }
+        isVoiceTriggered = false;
+      })
+      .catch(err => {
+        currentChat.push({ sender: 'bot', text: "⚠ Error occurred" });
+        renderMessages();
+      });
+    }
+
+    function renderMessages() {
+  const container = document.getElementById('messages');
+  container.innerHTML = '';
+  currentChat.forEach(msg => {
+    const div = document.createElement('div');
+    div.className = `message ${msg.sender}`;
+    div.innerText = msg.text;
+    container.appendChild(div);
+  });
+  container.scrollTop = container.scrollHeight;
+}
+
+
+    function toggleVoice() {
+      const micBtn = document.getElementById('micBtn');
+      if (!recognition) {
+        recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+        recognition.onresult = function (event) {
+          const transcript = event.results[0][0].transcript;
+          document.getElementById('userInput').value = transcript;
+          isVoiceTriggered = true;
+          sendMessage();
+        };
+      }
+
+      if (isListening) {
+        recognition.stop();
+        micBtn.classList.remove('active');
+        micBtn.innerText = '🎤';
+        isListening = false;
+        speechSynthesis.cancel();
+        statusText.innerText = '';
+      } else {
+        recognition.start();
+        micBtn.classList.add('active');
+        micBtn.innerText = '🔴';
+        isListening = true;
+      }
+    }
+
+    function speak(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 1.4;
+      utterance.onend = () => {
+        statusText.innerText = '';
+      };
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utterance);
+    }
+
+    document.getElementById("userInput").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        sendMessage();a
+      }
+    });
+
+    startNewChat();
+  </script>
+</body>
+</html>
