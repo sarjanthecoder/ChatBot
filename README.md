@@ -1,3 +1,8 @@
+guys if u want a data base i will update it in later verrsions
+
+
+
+
 # NexusAI - Intelligent Chatbot 🤖
 
 A beautiful, modern AI chatbot powered by Cohere AI with a stunning glassmorphism UI design.
