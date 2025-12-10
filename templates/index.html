@@ -12,8 +12,6 @@
     :root {
       --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-
-      
       --glass-bg: rgba(255, 255, 255, 0.05);
       --glass-border: rgba(255, 255, 255, 0.18);
       --text-light: #ffffff;
@@ -1031,38 +1029,8 @@
           isVoiceTriggered = true;
           sendMessage();
         };
-      }
-
-      if (isListening) {
-        recognition.stop();
-        micBtn.classList.remove('active');
-        isListening = false;
-        speechSynthesis.cancel();
-      } else {
-        recognition.start();
-        micBtn.classList.add('active');
-        isListening = true;
-      }
-    }
-
-    function speak(text) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 1.4;
-      speechSynthesis.cancel();
-      speechSynthesis.speak(utterance);
-    }
-
-    // Enter key to send
-    document.getElementById("userInput").addEventListener("keydown", function (e) {
-      if (e.key === "Enter") {
-        sendMessage();
-      }
-    });
-
     // Initialize
     startNewChat();
   </script>
 </body>
 </html>
-
-
