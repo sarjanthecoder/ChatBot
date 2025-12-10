@@ -1,1 +1,385 @@
 
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusAI - Intelligent Chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <style></style>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+        <div class="particles" id="particles"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <span class="logo-text">Nexus<span class="highlight">AI</span></span>
+            </div>
+            <nav class="nav">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#chat" class="nav-link">Chat</a>
+                <a href="#about" class="nav-link">About</a>
+            </nav>
+            <div class="header-actions">
+                <button class="btn btn-outline" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="btn btn-primary" onclick="scrollToChat()">
+                    Start Chatting <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#home" class="mobile-nav-link">Home</a>
+        <a href="#features" class="mobile-nav-link">Features</a>
+        <a href="#chat" class="mobile-nav-link">Chat</a>
+        <a href="#about" class="mobile-nav-link">About</a>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-sparkles"></i>
+                    <span>Powered by Cohere AI</span>
+                </div>
+                <h1 class="hero-title">
+                    Experience the Future of
+                    <span class="gradient-text">AI Conversation</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Engage with our advanced AI chatbot powered by cutting-edge natural language processing.
+                    Get intelligent responses, maintain conversation history, and enjoy a seamless chat experience.
+                </p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary btn-large" onclick="scrollToChat()">
+                        <i class="fas fa-comments"></i>
+                        Start Free Chat
+                    </button>
+                    <button class="btn btn-glass btn-large" onclick="scrollToFeatures()">
+                        <i class="fas fa-play"></i>
+                        See Features
+                    </button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">10M+</span>
+                        <span class="stat-label">Messages Processed</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">99.9%</span>
+                        <span class="stat-label">Uptime</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">50ms</span>
+                        <span class="stat-label">Response Time</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="chat-preview">
+                    <div class="preview-header">
+                        <div class="preview-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <span>NexusAI Chat</span>
+                    </div>
+                    <div class="preview-messages">
+                        <div class="preview-msg user">Hello! What can you do?</div>
+                        <div class="preview-msg bot">
+                            <div class="typing-indicator">
+                                <span></span><span></span><span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features">
+            <div class="section-header">
+                <span class="section-badge">Features</span>
+                <h2 class="section-title">Powerful Capabilities</h2>
+                <p class="section-subtitle">Discover what makes NexusAI the perfect AI companion</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Smart Conversations</h3>
+                    <p>Advanced NLP powered by Cohere for natural, context-aware responses</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3>Chat Memory</h3>
+                    <p>Remembers your conversation history for seamless continued chats</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Lightning Fast</h3>
+                    <p>Instant responses with optimized API calls and caching</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Secure & Private</h3>
+                    <p>Your conversations are encrypted and never shared</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3>Beautiful UI</h3>
+                    <p>Modern, intuitive interface with dark mode support</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-infinity"></i>
+                    </div>
+                    <h3>Unlimited Chats</h3>
+                    <p>Create multiple chat sessions and switch between them</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chat Section -->
+        <section id="chat" class="chat-section">
+            <div class="section-header">
+                <span class="section-badge">Chat Now</span>
+                <h2 class="section-title">Start Your Conversation</h2>
+                <p class="section-subtitle">Experience AI-powered chat with memory and context</p>
+            </div>
+
+            <div class="chat-container">
+                <!-- Sidebar -->
+                <aside class="chat-sidebar">
+                    <div class="sidebar-header">
+                        <h3><i class="fas fa-comments"></i> Conversations</h3>
+                        <button class="btn btn-icon" id="newChatBtn" title="New Chat">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <div class="chat-list" id="chatList">
+                        <!-- Chat items will be loaded here -->
+                    </div>
+                    <div class="sidebar-footer">
+                        <button class="btn btn-danger btn-full" id="clearAllBtn">
+                            <i class="fas fa-trash"></i> Clear All Chats
+                        </button>
+                    </div>
+                </aside>
+
+                <!-- Chat Main -->
+                <div class="chat-main">
+                    <!-- Chat Header -->
+                    <div class="chat-header">
+                        <div class="chat-info">
+                            <button class="btn btn-icon sidebar-toggle" id="sidebarToggle">
+                                <i class="fas fa-bars"></i>
+                            </button>
+                            <div class="chat-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="chat-details">
+                                <h4>NexusAI Assistant</h4>
+                                <span class="status online">
+                                    <span class="status-dot"></span>
+                                    Online
+                                </span>
+                            </div>
+                        </div>
+                        <div class="chat-actions">
+                            <button class="btn btn-icon" id="clearChatBtn" title="Clear Chat">
+                                <i class="fas fa-eraser"></i>
+                            </button>
+                            <button class="btn btn-icon" id="deleteChatBtn" title="Delete Chat">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Chat Messages -->
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="welcome-message">
+                            <div class="welcome-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <h3>Welcome to NexusAI!</h3>
+                            <p>I'm your AI assistant powered by Cohere. How can I help you today?</p>
+                            <div class="quick-prompts">
+                                <button class="quick-prompt" onclick="sendQuickPrompt('Tell me about yourself')">
+                                    <i class="fas fa-info-circle"></i>
+                                    Tell me about yourself
+                                </button>
+                                <button class="quick-prompt" onclick="sendQuickPrompt('What can you help me with?')">
+                                    <i class="fas fa-question-circle"></i>
+                                    What can you help me with?
+                                </button>
+                                <button class="quick-prompt" onclick="sendQuickPrompt('Give me a fun fact')">
+                                    <i class="fas fa-lightbulb"></i>
+                                    Give me a fun fact
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat Input -->
+                    <div class="chat-input-container">
+                        <div class="chat-input-wrapper">
+                            <button class="btn btn-icon emoji-btn" title="Add Emoji">
+                                <i class="fas fa-smile"></i>
+                            </button>
+                            <textarea id="messageInput" placeholder="Type your message here..." rows="1"></textarea>
+                            <button class="btn btn-icon attach-btn" title="Attach File">
+                                <i class="fas fa-paperclip"></i>
+                            </button>
+                            <button class="btn btn-primary send-btn" id="sendBtn">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        <p class="input-hint">Press Enter to send, Shift+Enter for new line</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="about-content">
+                <div class="about-text">
+                    <span class="section-badge">About</span>
+                    <h2>Built with Cutting-Edge Technology</h2>
+                    <p>
+                        NexusAI leverages the power of Cohere's advanced language models to deliver
+                        intelligent, context-aware conversations. Our platform is designed to provide
+                        a seamless user experience with features like chat memory, multiple conversations,
+                        and a beautiful interface.
+                    </p>
+                    <div class="tech-stack">
+                        <div class="tech-item">
+                            <i class="fab fa-python"></i>
+                            <span>Python</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-flask"></i>
+                            <span>Flask</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fas fa-brain"></i>
+                            <span>Cohere AI</span>
+                        </div>
+                        <div class="tech-item">
+                            <i class="fab fa-js"></i>
+                            <span>JavaScript</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-visual">
+                    <div class="code-window">
+                        <div class="code-header">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <pre><code><span class="keyword">const</span> nexusAI = {
+  <span class="property">model</span>: <span class="string">"Cohere Command"</span>,
+  <span class="property">features</span>: [
+    <span class="string">"Chat Memory"</span>,
+    <span class="string">"Context Aware"</span>,
+    <span class="string">"Multi-Session"</span>
+  ],
+  <span class="property">status</span>: <span class="string">"Online"</span> ✨
+};</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <span class="logo-text">Nexus<span class="highlight">AI</span></span>
+                    </div>
+                    <p>Experience the future of AI-powered conversations with NexusAI.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Product</h4>
+                        <a href="#">Features</a>
+                        <a href="#">Pricing</a>
+                        <a href="#">API</a>
+                        <a href="#">Documentation</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <a href="#">About</a>
+                        <a href="#">Blog</a>
+                        <a href="#">Careers</a>
+                        <a href="#">Contact</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Legal</h4>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                        <a href="#">Security</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 NexusAI. All rights reserved.</p>
+                <p>Powered by <a href="https://cohere.ai" target="_blank">Cohere AI</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
