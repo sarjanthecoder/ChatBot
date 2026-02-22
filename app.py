@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, render_template
 import cohere
 
 app = Flask(__name__)
-co = cohere.Client('odGGlygpsDVvxniOuy6yMB1m63OQDv7b3OA2L7kQ')  # Replace with your real key
+co = cohere.Client
 
 @app.route('/')
 def index():
@@ -20,4 +20,4 @@ def chat():
         return jsonify({'response': f"⚠ Error: {str(e)}"}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
